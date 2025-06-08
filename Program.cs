@@ -27,24 +27,24 @@ namespace FileDateTime_Manipulator
 
 				// Starts the main form of the application
 				using FdtmForm mainForm = new();
-				Application.Run(mainForm);
+				Application.Run(mainForm: mainForm);
 			}
 			catch (InvalidOperationException ex)
 			{
 				// Handle specific InvalidOperationException
-				string message = "An invalid operation occurred. Please try again.";
+				const string message = "An invalid operation occurred. Please try again.";
 				Debug.WriteLine(value: ex);
 				Logger.Error(exception: ex, message: message);
-				LogError(ex);
+				LogError(ex: ex);
 				ShowErrorMessage(message: message);
 			}
 			catch (Exception ex)
 			{
 				// Error handling: Log the error and display an error message
-				string message = "An unexpected error occurred. Please contact support.";
+				const string message = "An unexpected error occurred. Please contact support.";
 				Debug.WriteLine(value: ex);
 				Logger.Error(exception: ex, message: message);
-				LogError(ex);
+				LogError(ex: ex);
 				ShowErrorMessage(message: message);
 			}
 		}
@@ -56,7 +56,7 @@ namespace FileDateTime_Manipulator
 		private static void LogError(Exception ex)
 		{
 			// Implement logging logic here (e.g., log to a file or monitoring system)
-			Console.WriteLine(value: $"Error: {ex.Message}\n{ex.StackTrace}");
+			Console.WriteLine(value: $@"Error: {ex.Message} {ex.StackTrace}");
 		}
 
 		/// <summary>
@@ -65,7 +65,7 @@ namespace FileDateTime_Manipulator
 		/// <param name="message">The error message to display.</param>
 		private static void ShowErrorMessage(string message)
 		{
-			_ = MessageBox.Show(text: message, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+			_ = MessageBox.Show(text: message, caption: @"Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
 		}
 	}
 }
