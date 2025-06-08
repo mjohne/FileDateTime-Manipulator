@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using NLog;
 
 namespace FileDateTime_Manipulator
@@ -24,13 +25,13 @@ namespace FileDateTime_Manipulator
 			try
 			{
 				InitializeComponent();
-				this.KeyDown += new KeyEventHandler(FdtmForm_KeyDown);
-				this.KeyPreview = true; // Ensures the form receives key events before the controls
+				KeyDown += FdtmForm_KeyDown;
+				KeyPreview = true; // Ensures the form receives key events before the controls
 				Logger.Info(message: "FdtmForm_KeyDown initialized");
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error during form initialization.", messageBox: "An error occurred during form initialization.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error during form initialization.", messageBox: "An error occurred during form initialization.");
 			}
 		}
 
@@ -48,14 +49,14 @@ namespace FileDateTime_Manipulator
 		{
 			Debug.WriteLine(value: ex);
 			Logger.Error(exception: ex, message: messageLogger);
-			_ = MessageBox.Show(text: messageBox, caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
+			_ = MessageBox.Show(text: messageBox, caption: @"Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
 		}
 
 		/// <summary>
 		/// Sets a specific text to the status bar
 		/// </summary>
 		/// <param name="text">The text with some information to display in the status bar</param>
-		private void SetStatusbarText(string text)
+		private void SetStatusBarText(string text)
 		{
 			try
 			{
@@ -64,12 +65,12 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting status bar text.", messageBox: "An error occurred while setting the status bar text.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting status bar text.", messageBox: "An error occurred while setting the status bar text.");
 			}
 		}
 
 		/// <summary>
-		/// Enable all disabled controls after a adding a file or a folder
+		/// Enable all disabled controls after an adding a file or a folder
 		/// </summary>
 		private void EnableAllControls()
 		{
@@ -116,7 +117,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error enabling all controls.", messageBox: "An error occurred while enabling all controls.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error enabling all controls.", messageBox: "An error occurred while enabling all controls.");
 			}
 		}
 
@@ -135,7 +136,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error during form load.", messageBox: "An error occurred during form load.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error during form load.", messageBox: "An error occurred during form load.");
 			}
 		}
 
@@ -148,26 +149,19 @@ namespace FileDateTime_Manipulator
 		/// </summary>
 		/// <param name="sender">The event source</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
-		private void SetStatusbar_Enter(object sender, EventArgs e)
+		private void SetStatusBar_Enter(object sender, EventArgs e)
 		{
-			try
+			// Set the status bar text based on the sender's accessible description
+			switch (sender)
 			{
-				if (sender is Control { AccessibleDescription: { } } control)
-				{
-					SetStatusbarText(text: control.AccessibleDescription);
-				}
-				else if (sender is ToolStripMenuItem { AccessibleDescription: { } } control2)
-				{
-					SetStatusbarText(text: control2.AccessibleDescription);
-				}
-				else if (sender is ToolStripStatusLabel { AccessibleDescription: { } } control3)
-				{
-					SetStatusbarText(text: control3.AccessibleDescription);
-				}
-			}
-			catch (Exception ex)
-			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting status bar text on enter.", messageBox: "An error occurred while setting the status bar text on enter.");
+				// If the sender is a control with an accessible description, set the status bar text
+				// If the sender is a ToolStripItem with an accessible description, set the status bar text
+				case Control { AccessibleDescription: not null } control:
+					SetStatusBarText(text: control.AccessibleDescription);
+					break;
+				case ToolStripItem { AccessibleDescription: not null } item:
+					SetStatusBarText(text: item.AccessibleDescription);
+					break;
 			}
 		}
 
@@ -184,11 +178,11 @@ namespace FileDateTime_Manipulator
 		{
 			try
 			{
-				SetStatusbarText(text: string.Empty);
+				SetStatusBarText(text: string.Empty);
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error clearing status bar text on leave.", messageBox: "An error occurred while clearing the status bar text on leave.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error clearing status bar text on leave.", messageBox: "An error occurred while clearing the status bar text on leave.");
 			}
 		}
 
@@ -205,15 +199,17 @@ namespace FileDateTime_Manipulator
 		{
 			try
 			{
-				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				if (openFileDialog.ShowDialog() != DialogResult.OK)
 				{
-					textBoxPath.Text = openFileDialog.FileName;
-					EnableAllControls();
+					return;
 				}
+
+				textBoxPath.Text = openFileDialog.FileName;
+				EnableAllControls();
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error selecting file.", messageBox: "An error occurred while selecting the file.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error selecting file.", messageBox: "An error occurred while selecting the file.");
 			}
 		}
 
@@ -226,15 +222,17 @@ namespace FileDateTime_Manipulator
 		{
 			try
 			{
-				if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+				if (folderBrowserDialog.ShowDialog() != DialogResult.OK)
 				{
-					textBoxPath.Text = folderBrowserDialog.SelectedPath;
-					EnableAllControls();
+					return;
 				}
+
+				textBoxPath.Text = folderBrowserDialog.SelectedPath;
+				EnableAllControls();
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error selecting folder.", messageBox: "An error occurred while selecting the folder.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error selecting folder.", messageBox: "An error occurred while selecting the folder.");
 			}
 		}
 
@@ -252,18 +250,18 @@ namespace FileDateTime_Manipulator
 				DateTime lastWriteTime = dateTimePickerWrited.Value;
 
 				string path = textBoxPath.Text;
-				FileAttributes attr = File.GetAttributes(path);
+				FileAttributes attr = File.GetAttributes(path: path);
 				bool isFolder = (attr & FileAttributes.Directory) == FileAttributes.Directory;
 
 				if (dateTimePickerCreated.Checked)
 				{
 					if (isFolder)
 					{
-						Directory.SetCreationTime(path, creationTime);
+						Directory.SetCreationTime(path: path, creationTime: creationTime);
 					}
 					else
 					{
-						File.SetCreationTime(path, creationTime);
+						File.SetCreationTime(path: path, creationTime: creationTime);
 					}
 				}
 
@@ -271,11 +269,11 @@ namespace FileDateTime_Manipulator
 				{
 					if (isFolder)
 					{
-						Directory.SetLastAccessTime(path, lastAccessTime);
+						Directory.SetLastAccessTime(path: path, lastAccessTime: lastAccessTime);
 					}
 					else
 					{
-						File.SetLastAccessTime(path, lastAccessTime);
+						File.SetLastAccessTime(path: path, lastAccessTime: lastAccessTime);
 					}
 				}
 
@@ -283,22 +281,22 @@ namespace FileDateTime_Manipulator
 				{
 					if (isFolder)
 					{
-						Directory.SetLastWriteTime(path, lastWriteTime);
+						Directory.SetLastWriteTime(path: path, lastWriteTime: lastWriteTime);
 					}
 					else
 					{
-						File.SetLastWriteTime(path, lastWriteTime);
+						File.SetLastWriteTime(path: path, lastWriteTime: lastWriteTime);
 					}
 				}
 
 				UpdateRadioButtonStates();
-				UpdateTextBoxes(isFolder, path);
+				UpdateTextBoxes(isFolder: isFolder, path: path);
 
-				_ = MessageBox.Show(text: "All dates have been changed!", caption: "Information", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
+				_ = MessageBox.Show(text: @"All dates have been changed!", caption: @"Information", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error applying changes.", messageBox: "An error occurred while applying the changes.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error applying changes.", messageBox: "An error occurred while applying the changes.");
 			}
 		}
 
@@ -318,7 +316,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error updating radio button states.", messageBox: "An error occurred while updating the radio button states.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error updating radio button states.", messageBox: "An error occurred while updating the radio button states.");
 			}
 		}
 
@@ -332,20 +330,20 @@ namespace FileDateTime_Manipulator
 			try
 			{
 				textBoxCreationDate.Text = radioButtonCreationDateLocalTime.Checked
-					? (isFolder ? Directory.GetCreationTime(path).ToString() : File.GetCreationTime(path).ToString())
-					: (isFolder ? Directory.GetCreationTimeUtc(path).ToString() : File.GetCreationTimeUtc(path).ToString());
+					? (isFolder ? Directory.GetCreationTime(path: path).ToString(CultureInfo.CurrentCulture) : File.GetCreationTime(path: path).ToString(CultureInfo.CurrentCulture))
+					: (isFolder ? Directory.GetCreationTimeUtc(path: path).ToString(CultureInfo.CurrentCulture) : File.GetCreationTimeUtc(path: path).ToString(CultureInfo.CurrentCulture));
 
 				textBoxLastAccessDate.Text = radioButtonLastAccessDateLocalTime.Checked
-					? (isFolder ? Directory.GetLastAccessTime(path).ToString() : File.GetLastAccessTime(path).ToString())
-					: (isFolder ? Directory.GetLastAccessTimeUtc(path).ToString() : File.GetLastAccessTimeUtc(path).ToString());
+					? (isFolder ? Directory.GetLastAccessTime(path: path).ToString(CultureInfo.CurrentCulture) : File.GetLastAccessTime(path: path).ToString(CultureInfo.CurrentCulture))
+					: (isFolder ? Directory.GetLastAccessTimeUtc(path: path).ToString(CultureInfo.CurrentCulture) : File.GetLastAccessTimeUtc(path: path).ToString(CultureInfo.CurrentCulture));
 
 				textBoxLastWriteDate.Text = radioButtonLastWriteDateLocalTime.Checked
-					? (isFolder ? Directory.GetLastWriteTime(path).ToString() : File.GetLastWriteTime(path).ToString())
-					: (isFolder ? Directory.GetLastWriteTimeUtc(path).ToString() : File.GetLastWriteTimeUtc(path).ToString());
+					? (isFolder ? Directory.GetLastWriteTime(path: path).ToString(CultureInfo.CurrentCulture) : File.GetLastWriteTime(path: path).ToString(CultureInfo.CurrentCulture))
+					: (isFolder ? Directory.GetLastWriteTimeUtc(path: path).ToString(CultureInfo.CurrentCulture) : File.GetLastWriteTimeUtc(path: path).ToString(CultureInfo.CurrentCulture));
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error updating text boxes.", messageBox: "An error occurred while updating the text boxes.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error updating text boxes.", messageBox: "An error occurred while updating the text boxes.");
 			}
 		}
 
@@ -359,11 +357,11 @@ namespace FileDateTime_Manipulator
 			try
 			{
 				string message = $"{AssemblyInfo.AssemblyTitle} {AssemblyInfo.AssemblyVersion}\r\r\r{AssemblyInfo.AssemblyDescription}\r\r{AssemblyInfo.AssemblyCopyright}";
-				_ = MessageBox.Show(text: message, caption: "Information", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
+				_ = MessageBox.Show(text: message, caption: @"Information", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error displaying information.", messageBox: "An error occurred while displaying the information.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error displaying information.", messageBox: "An error occurred while displaying the information.");
 			}
 		}
 
@@ -380,7 +378,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error closing the application.", messageBox: "An error occurred while closing the application.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error closing the application.", messageBox: "An error occurred while closing the application.");
 			}
 		}
 
@@ -401,7 +399,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting creation date in local time.", messageBox: "An error occurred while getting the creation date in local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting creation date in local time.", messageBox: "An error occurred while getting the creation date in local time.");
 			}
 		}
 
@@ -418,7 +416,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting creation date in universal time.", messageBox: "An error occurred while getting the creation date in universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting creation date in universal time.", messageBox: "An error occurred while getting the creation date in universal time.");
 			}
 		}
 		/// <summary>
@@ -434,7 +432,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting last access date in local time.", messageBox: "An error occurred while getting the last access date in local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting last access date in local time.", messageBox: "An error occurred while getting the last access date in local time.");
 			}
 		}
 
@@ -451,7 +449,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting last access date in universal time.", messageBox: "An error occurred while getting the last access date in universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting last access date in universal time.", messageBox: "An error occurred while getting the last access date in universal time.");
 			}
 		}
 		/// <summary>
@@ -467,7 +465,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting last write date in local time.", messageBox: "An error occurred while getting the last write date in local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting last write date in local time.", messageBox: "An error occurred while getting the last write date in local time.");
 			}
 		}
 
@@ -484,7 +482,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting last write date in universal time.", messageBox: "An error occurred while getting the last write date in universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting last write date in universal time.", messageBox: "An error occurred while getting the last write date in universal time.");
 			}
 		}
 
@@ -499,13 +497,13 @@ namespace FileDateTime_Manipulator
 			try
 			{
 				string path = textBoxPath.Text;
-				FileAttributes attr = File.GetAttributes(path);
+				FileAttributes attr = File.GetAttributes(path: path);
 				bool isFolder = (attr & FileAttributes.Directory) == FileAttributes.Directory;
-				return isFolder ? getDirectoryTime(arg: path).ToString() : getFileTime(arg: path).ToString();
+				return isFolder ? getDirectoryTime(arg: path).ToString(CultureInfo.CurrentCulture) : getFileTime(arg: path).ToString(CultureInfo.CurrentCulture);
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error getting formatted date.", messageBox: "An error occurred while getting the formatted date.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting formatted date.", messageBox: "An error occurred while getting the formatted date.");
 				return string.Empty;
 			}
 		}
@@ -523,7 +521,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new creation date to local time.", messageBox: "An error occurred while setting the new creation date to local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new creation date to local time.", messageBox: "An error occurred while setting the new creation date to local time.");
 			}
 		}
 
@@ -540,7 +538,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new creation date to universal time.", messageBox: "An error occurred while setting the new creation date to universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new creation date to universal time.", messageBox: "An error occurred while setting the new creation date to universal time.");
 			}
 		}
 
@@ -557,7 +555,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new last access date to local time.", messageBox: "An error occurred while setting the new last access date to local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new last access date to local time.", messageBox: "An error occurred while setting the new last access date to local time.");
 			}
 		}
 
@@ -574,7 +572,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new last access date to universal time.", messageBox: "An error occurred while setting the new last access date to universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new last access date to universal time.", messageBox: "An error occurred while setting the new last access date to universal time.");
 			}
 		}
 
@@ -591,7 +589,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new last write date to local time.", messageBox: "An error occurred while setting the new last write date to local time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new last write date to local time.", messageBox: "An error occurred while setting the new last write date to local time.");
 			}
 		}
 
@@ -608,7 +606,7 @@ namespace FileDateTime_Manipulator
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error setting new last write date to universal time.", messageBox: "An error occurred while setting the new last write date to universal time.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new last write date to universal time.", messageBox: "An error occurred while setting the new last write date to universal time.");
 			}
 		}
 
@@ -625,12 +623,12 @@ namespace FileDateTime_Manipulator
 		{
 			try
 			{
-				toolStripStatusLabelInformation.Text = "Drag and drop a file or a folder in this window";
+				toolStripStatusLabelInformation.Text = @"Drag and drop a file or a folder in this window";
 				e.Effect = e.Data != null && e.Data.GetDataPresent(format: DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error during drag over.", messageBox: "An error occurred during drag over.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error during drag over.", messageBox: "An error occurred during drag over.");
 			}
 		}
 
@@ -644,17 +642,19 @@ namespace FileDateTime_Manipulator
 			try
 			{
 				// get all files dropped
-				if (e.Data?.GetData(format: DataFormats.FileDrop, autoConvert: false) is string[] files)
+				if (e.Data?.GetData(format: DataFormats.FileDrop, autoConvert: false) is not string[] files)
 				{
-					textBoxPath.Text = files[0]; //select the first one
-					EnableAllControls();
-					buttonApply.Enabled = true;
-					//foreach (string file in files) this.label.Text += File + "\n";
+					return;
 				}
+
+				textBoxPath.Text = files[0]; //select the first one
+				EnableAllControls();
+				buttonApply.Enabled = true;
+				//foreach (string file in files) this.label.Text += File + "\n";
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error during drag over.", messageBox: "An error occurred during drag drop.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error during drag over.", messageBox: "An error occurred during drag drop.");
 			}
 		}
 		#endregion
@@ -673,12 +673,12 @@ namespace FileDateTime_Manipulator
 			{
 				if (e.KeyCode == Keys.Escape)
 				{
-					this.Close();
+					Close();
 				}
 			}
 			catch (Exception ex)
 			{
-				ShowAndLogErrorMessage(ex, messageLogger: "Error handling KeyDown event.", messageBox: "An error occurred while handling the KeyDown event.");
+				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error handling KeyDown event.", messageBox: "An error occurred while handling the KeyDown event.");
 			}
 		}
 
