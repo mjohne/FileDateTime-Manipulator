@@ -33,9 +33,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Return the product name of the assembly
-		/// </summary>
+		/// <summary>Return the product name of the assembly</summary>
 		public static string AssemblyProduct
 		{
 			get
