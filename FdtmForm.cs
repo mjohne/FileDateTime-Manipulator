@@ -59,7 +59,8 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>Enables all disabled controls after adding a file or a folder</summary>
+		/// <summary>Enables all disabled controls after adding a file or a folder</summary>
+
 		private void EnableAllControls()
 		{
 			try
@@ -476,7 +477,7 @@ namespace FileDateTime_Manipulator
 				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new creation date to local time.", messageBox: "An error occurred while setting the new creation date to local time.");
 			}
 		}
-
+		/// <summary>Shows the date/time of the new creation date in universal time</summary>
 		/// <summary>Shows the date/time of the last creation date in universal time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
