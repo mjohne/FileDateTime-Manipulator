@@ -59,7 +59,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>Enable all disabled controls after an adding a file or a folder</summary>
+		/// <summary>Enables all disabled controls after adding a file or a folder</summary>
 		private void EnableAllControls()
 		{
 			try
