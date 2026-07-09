@@ -477,7 +477,8 @@ namespace FileDateTime_Manipulator
 				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error setting new creation date to local time.", messageBox: "An error occurred while setting the new creation date to local time.");
 			}
 		}
-		/// <summary>Shows the date/time of the new creation date in universal time</summary>
+		/// <summary>Shows the date/time of the new creation date in universal time</summary>
+
 		/// <summary>Shows the date/time of the last creation date in universal time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
@@ -599,7 +600,7 @@ namespace FileDateTime_Manipulator
 		#endregion
 
 		#region KeyDown event handler
-
+		/// <summary>Handles the KeyDown event of the FdtmForm. Closes the form when the Escape key is pressed.</summary>
 		/// <summary>Handles the KeyDown event of the ExportDataSheetForm. Closes the form when the Escape key is pressed.</summary>
 		/// <param name="sender">The event source.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
