@@ -2,16 +2,12 @@ using System.Reflection;
 
 namespace FileDateTime_Manipulator
 {
-	/// <summary>
-	/// Provide some assembly information
-	/// </summary>
+	/// <summary>Provide some assembly information</summary>
 	public static class AssemblyInfo
 	{
 		#region Assembly attribute accessors
 
-		/// <summary>
-		/// Return the title of the assembly
-		/// </summary>
+		/// <summary>Return the title of the assembly</summary>
 		public static string AssemblyTitle
 		{
 			get
@@ -24,14 +20,10 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Return the version of the assembly
-		/// </summary>
+		/// <summary>Return the version of the assembly</summary>
 		public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty;
 
-		/// <summary>
-		/// Return the description of the assembly
-		/// </summary>
+		/// <summary>Return the description of the assembly</summary>
 		public static string AssemblyDescription
 		{
 			get
@@ -53,9 +45,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Return the copyright of the assembly
-		/// </summary>
+		/// <summary>Return the copyright of the assembly</summary>
 		public static string AssemblyCopyright
 		{
 			get
@@ -65,9 +55,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Return the company name of the assembly
-		/// </summary>
+		/// <summary>Return the company name of the assembly</summary>
 		public static string AssemblyCompany
 		{
 			get
