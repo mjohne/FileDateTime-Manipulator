@@ -4,22 +4,16 @@ using NLog;
 
 namespace FileDateTime_Manipulator
 {
-	/// <summary>
-	/// FileDateTime Manipulator Form
-	/// </summary>
+	/// <summary>FileDateTime Manipulator Form</summary>
 	[DebuggerDisplay(value: $"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 	public partial class FdtmForm : Form
 	{
-		/// <summary>
-		/// Logger instance for logging messages and exceptions.
-		/// </summary>
+		/// <summary>Logger instance for logging messages and exceptions.</summary>
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 		#region Constructor
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FdtmForm"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="FdtmForm"/> class.</summary>
 		public FdtmForm()
 		{
 			try
@@ -39,9 +33,7 @@ namespace FileDateTime_Manipulator
 
 		#region Helpers
 
-		/// <summary>
-		/// Get Debugger Display
-		/// </summary>
+		/// <summary>Get Debugger Display</summary>
 		/// <returns>Return the debugger display</returns>
 		private string GetDebuggerDisplay() => ToString();
 
@@ -52,9 +44,7 @@ namespace FileDateTime_Manipulator
 			_ = MessageBox.Show(text: messageBox, caption: @"Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Error);
 		}
 
-		/// <summary>
-		/// Sets a specific text to the status bar
-		/// </summary>
+		/// <summary>Sets a specific text to the status bar</summary>
 		/// <param name="text">The text with some information to display in the status bar</param>
 		private void SetStatusBarText(string text)
 		{
@@ -69,9 +59,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Enable all disabled controls after an adding a file or a folder
-		/// </summary>
+		/// <summary>Enable all disabled controls after an adding a file or a folder</summary>
 		private void EnableAllControls()
 		{
 			try
@@ -121,9 +109,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Handles the Load event of the form
-		/// </summary>
+		/// <summary>Handles the Load event of the form</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data</param>
 		private void FdtmForm_Load(object sender, EventArgs e)
@@ -144,9 +130,7 @@ namespace FileDateTime_Manipulator
 
 		#region Enter event handlers
 
-		/// <summary>
-		/// Called when the mouse pointer moves over a control
-		/// </summary>
+		/// <summary>Called when the mouse pointer moves over a control</summary>
 		/// <param name="sender">The event source</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void SetStatusBar_Enter(object sender, EventArgs e)
@@ -169,9 +153,7 @@ namespace FileDateTime_Manipulator
 
 		#region Leave event handlers
 
-		/// <summary>
-		/// Clears the information text of the status bar
-		/// </summary>
+		/// <summary>Clears the information text of the status bar</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ClearStatusBar_Leave(object sender, EventArgs e)
@@ -190,9 +172,7 @@ namespace FileDateTime_Manipulator
 
 		#region Click event handlers
 
-		/// <summary>
-		/// Selects a folder
-		/// </summary>
+		/// <summary>Selects a folder</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ButtonSelectFile_Click(object sender, EventArgs e)
@@ -213,9 +193,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Selects a folder
-		/// </summary>
+		/// <summary>Selects a folder</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ButtonSelectFolder_Click(object sender, EventArgs e)
@@ -236,9 +214,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Applies the changes
-		/// </summary>
+		/// <summary>Applies the changes</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ButtonApply_Click(object sender, EventArgs e)
@@ -300,9 +276,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Updates the checked state of the radio buttons based on the new date settings.
-		/// </summary>
+		/// <summary>Updates the checked state of the radio buttons based on the new date settings.</summary>
 		private void UpdateRadioButtonStates()
 		{
 			try
@@ -320,9 +294,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Updates the text boxes with the current date and time information.
-		/// </summary>
+		/// <summary>Updates the text boxes with the current date and time information.</summary>
 		/// <param name="isFolder">Indicates whether the path is a folder.</param>
 		/// <param name="path">The path of the file or folder.</param>
 		private void UpdateTextBoxes(bool isFolder, string path)
@@ -347,9 +319,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Opens the information message
-		/// </summary>
+		/// <summary>Opens the information message</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ButtonInfo_Click(object sender, EventArgs e)
@@ -365,9 +335,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Closes the application
-		/// </summary>
+		/// <summary>Closes the application</summary>
 		/// <param name="sender">The source of the event</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data</param>
 		private void ButtonClose_Click(object sender, EventArgs e)
@@ -386,9 +354,7 @@ namespace FileDateTime_Manipulator
 
 		#region CheckedChanged-Eventhandler
 
-		/// <summary>
-		/// Shows the date/time of the creation date in local time.
-		/// </summary>
+		/// <summary>Shows the date/time of the creation date in local time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonCreationDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -403,9 +369,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the creation date in universal time.
-		/// </summary>
+		/// <summary>Shows the date/time of the creation date in universal time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonCreationDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -419,9 +383,7 @@ namespace FileDateTime_Manipulator
 				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting creation date in universal time.", messageBox: "An error occurred while getting the creation date in universal time.");
 			}
 		}
-		/// <summary>
-		/// Shows the date/time of the last access date in local time.
-		/// </summary>
+		/// <summary>Shows the date/time of the last access date in local time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonLastAccessDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -436,9 +398,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the last access date in universal time.
-		/// </summary>
+		/// <summary>Shows the date/time of the last access date in universal time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonLastAccessDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -452,9 +412,7 @@ namespace FileDateTime_Manipulator
 				ShowAndLogErrorMessage(ex: ex, messageLogger: "Error getting last access date in universal time.", messageBox: "An error occurred while getting the last access date in universal time.");
 			}
 		}
-		/// <summary>
-		/// Shows the date/time of the last write date in local time.
-		/// </summary>
+		/// <summary>Shows the date/time of the last write date in local time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonLastWriteDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -469,9 +427,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the last write date in universal time.
-		/// </summary>
+		/// <summary>Shows the date/time of the last write date in universal time.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonLastWriteDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -486,9 +442,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Gets the formatted date based on whether the path is a directory or a file.
-		/// </summary>
+		/// <summary>Gets the formatted date based on whether the path is a directory or a file.</summary>
 		/// <param name="getDirectoryTime">The function to get the date/time for a directory.</param>
 		/// <param name="getFileTime">The function to get the date/time for a file.</param>
 		/// <returns>The formatted date/time as a string.</returns>
@@ -508,9 +462,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the new creation date in local time
-		/// </summary>
+		/// <summary>Shows the date/time of the new creation date in local time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewCreationDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -525,9 +477,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the last creation date in universal time
-		/// </summary>
+		/// <summary>Shows the date/time of the last creation date in universal time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewCreationDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -542,9 +492,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the new last access date in local time
-		/// </summary>
+		/// <summary>Shows the date/time of the new last access date in local time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewLastAccessDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -559,9 +507,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the new last access date in universal time
-		/// </summary>
+		/// <summary>Shows the date/time of the new last access date in universal time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewLastAccessDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -576,9 +522,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the new last write date in local time
-		/// </summary>
+		/// <summary>Shows the date/time of the new last write date in local time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewLastWriteDateLocalTime_CheckedChanged(object sender, EventArgs e)
@@ -593,9 +537,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Shows the date/time of the new last write date in universal time
-		/// </summary>
+		/// <summary>Shows the date/time of the new last write date in universal time</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void RadioButtonNewLastWriteDateUtc_CheckedChanged(object sender, EventArgs e)
@@ -614,9 +556,7 @@ namespace FileDateTime_Manipulator
 
 		#region Drag'n'Drop
 
-		/// <summary>
-		/// Drags a file/folder over the application
-		/// </summary>
+		/// <summary>Drags a file/folder over the application</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void FdtmForm_DragOver(object sender, DragEventArgs e)
@@ -632,9 +572,7 @@ namespace FileDateTime_Manipulator
 			}
 		}
 
-		/// <summary>
-		/// Drops file/folder over the application
-		/// </summary>
+		/// <summary>Drops file/folder over the application</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void FdtmForm_DragDrop(object sender, DragEventArgs e)
@@ -661,10 +599,7 @@ namespace FileDateTime_Manipulator
 
 		#region KeyDown event handler
 
-		/// <summary>
-		/// Handles the KeyDown event of the ExportDataSheetForm.
-		/// Closes the form when the Escape key is pressed.
-		/// </summary>
+		/// <summary>Handles the KeyDown event of the ExportDataSheetForm. Closes the form when the Escape key is pressed.</summary>
 		/// <param name="sender">The event source.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance that contains the event data.</param>
 		private void FdtmForm_KeyDown(object? sender, KeyEventArgs e)
